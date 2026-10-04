@@ -1,0 +1,463 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+:root {
+  font-family: "DM Sans", sans-serif;
+  color: #252d29;
+  background: #f5f4ef;
+  font-synthesis: none;
+  font-weight: 400;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #ad632e;
+  outline-offset: 4px;
+}
+a {
+  color: inherit;
+}
+main {
+  max-width: 1180px;
+  padding: 0 44px;
+  margin: auto;
+}
+header {
+  height: 100px;
+  border-bottom: 1px solid #d9dcd3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  text-decoration: none;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -1.2px;
+}
+.brand-mark {
+  margin-left: 12px;
+  color: #ad632e;
+}
+.edition,
+.eyebrow {
+  font:
+    10px "IBM Plex Mono",
+    monospace;
+  letter-spacing: 1.5px;
+  color: #667069;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(230px, 1fr) minmax(0, 570px);
+  gap: 85px;
+  padding: 58px 0 42px;
+}
+.eyebrow {
+  margin: 0 0 18px;
+}
+h1 {
+  font-size: clamp(40px, 4.5vw, 60px);
+  line-height: 1.04;
+  font-weight: 500;
+  letter-spacing: -2.8px;
+  margin: 0 0 24px;
+}
+.description {
+  font-size: 16px;
+  line-height: 1.65;
+  color: #626c64;
+  max-width: 300px;
+  margin: 0 0 35px;
+}
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.search {
+  display: flex;
+  border-bottom: 1px solid #8f9991;
+}
+input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  padding: 10px 0 14px;
+  background: transparent;
+  font-size: 13px;
+  outline-offset: 0;
+}
+input::placeholder {
+  color: #7b837b;
+}
+.search button {
+  border: 0;
+  background: transparent;
+  font-size: 24px;
+  padding: 0 8px;
+}
+.scale {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 26px 0 32px;
+}
+.scale label {
+  margin: 0;
+}
+select {
+  background: transparent;
+  border: 1px solid #c8cec5;
+  padding: 8px 10px;
+  border-radius: 3px;
+  font:
+    12px "IBM Plex Mono",
+    monospace;
+}
+.suggestions .eyebrow {
+  margin-bottom: 10px;
+}
+.suggestions button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid #e0e3db;
+  padding: 11px 0;
+  color: #616b63;
+  font-size: 13px;
+  text-align: left;
+}
+.suggestions button:hover,
+.suggestions .selected {
+  color: #a55b2b;
+}
+.suggestions span {
+  opacity: 0.65;
+}
+.hint {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #747d75;
+  margin: 26px 0 0;
+}
+.game-heading {
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+h2 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 7px;
+}
+.game-heading p {
+  font:
+    10px "IBM Plex Mono",
+    monospace;
+  color: #788178;
+  margin: 0;
+}
+.north {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 25px;
+  color: #667369;
+}
+.north small {
+  font:
+    9px "IBM Plex Mono",
+    monospace;
+  letter-spacing: 1px;
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  background: #dee2d8;
+  padding: 5px;
+  aspect-ratio: 1;
+  border: 1px solid #cdd3c8;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.tile {
+  border: 0;
+  padding: 0;
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #e8e9df;
+  opacity: 1 !important;
+}
+.map-square {
+  position: absolute;
+  inset: 0;
+  background-size: 300% 300%;
+  transition: transform 0.22s ease;
+  pointer-events: none;
+}
+.tile:hover {
+  box-shadow: inset 0 0 0 2px #ad632e;
+}
+.tile:focus-visible {
+  z-index: 2;
+  outline-offset: -4px;
+}
+.solved {
+  gap: 0;
+  padding: 0;
+  border-color: #627b5d;
+}
+.board-message {
+  grid-column: 1/-1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+  font-size: 14px;
+  color: #687567;
+}
+.board-message button {
+  padding: 10px 18px;
+  border: 1px solid #798775;
+  background: transparent;
+  border-radius: 3px;
+}
+.loader {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #bbc4b6;
+  border-top-color: #687567;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.stats {
+  display: flex;
+  justify-content: space-between;
+  padding: 19px 0;
+  border-bottom: 1px solid #d9dcd3;
+  font:
+    10px "IBM Plex Mono",
+    monospace;
+  color: #788178;
+}
+.stats strong {
+  font-weight: 400;
+  color: #303c32;
+  font-size: 15px;
+  margin-right: 4px;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 20px;
+}
+.actions button {
+  border: 0;
+  background: none;
+  font-size: 12px;
+  padding: 10px 0;
+  white-space: nowrap;
+}
+.actions .primary {
+  background: #334b3c;
+  color: #fff;
+  padding: 12px 17px;
+  border-radius: 3px;
+}
+.primary span {
+  margin-left: 13px;
+}
+.outcome {
+  min-height: 32px;
+  margin: 17px 0 4px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #697469;
+}
+.attribution {
+  font-size: 9px;
+  color: #7d867d;
+  margin: 0;
+}
+.attribution a {
+  text-underline-offset: 2px;
+}
+footer {
+  border-top: 1px solid #d9dcd3;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 23px 0 30px;
+  font-size: 10px;
+  color: #7a8279;
+}
+footer a {
+  text-decoration: none;
+}
+.error {
+  color: #a04428;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.results {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+.results button {
+  background: #e8ebe1;
+  border: 0;
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+  font-size: 12px;
+}
+.results li + li {
+  margin-top: 3px;
+}
+@media (max-width: 900px) {
+  main {
+    padding: 0 26px;
+  }
+  .layout {
+    gap: 35px;
+    grid-template-columns: minmax(210px, 1fr) minmax(0, 1.4fr);
+  }
+  .edition {
+    font-size: 8px;
+  }
+  .actions {
+    gap: 12px;
+  }
+  .actions button {
+    font-size: 11px;
+  }
+  .actions .primary {
+    padding: 11px;
+  }
+  .north small {
+    display: none;
+  }
+}
+@media (max-width: 650px) {
+  main {
+    padding: 0 20px;
+  }
+  header {
+    height: 76px;
+  }
+  .edition {
+    display: none;
+  }
+  .layout {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-top: 30px;
+  }
+  h1 {
+    font-size: 44px;
+  }
+  h1 br {
+    display: none;
+  }
+  .description {
+    max-width: 100%;
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+  .intro .eyebrow {
+    margin-bottom: 13px;
+  }
+  .suggestions {
+    display: flex;
+    gap: 7px;
+    overflow: auto;
+    max-width: 100%;
+    padding-bottom: 4px;
+  }
+  .suggestions .eyebrow {
+    display: none;
+  }
+  .suggestions button {
+    width: auto;
+    flex-shrink: 0;
+    border: 1px solid #d6dcd1;
+    padding: 8px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+  }
+  .suggestions span {
+    display: none;
+  }
+  .scale {
+    margin: 19px 0;
+  }
+  .hint {
+    margin-top: 14px;
+    font-size: 10px;
+  }
+  .game-heading {
+    height: 58px;
+  }
+  .actions {
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .stats {
+    font-size: 9px;
+  }
+  footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .outcome {
+    font-size: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-square {
+    transition: none;
+  }
+  .loader {
+    animation: none;
+  }
+}
