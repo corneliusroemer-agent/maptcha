@@ -2,6 +2,29 @@ import { test, expect, type Page } from "@playwright/test";
 const tile =
   '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256"><rect width="256" height="256" fill="#ececde"/><path d="M0 42L256 211 M82 0L148 256" stroke="#a9c8da" stroke-width="16"/><path d="M0 145L256 85" stroke="#fff" stroke-width="10"/><path d="M0 145L256 85" stroke="#e7bb72" stroke-width="2"/><circle cx="30" cy="30" r="17" fill="#bdcda3"/></svg>';
 async function fixture(page: Page) {
+  await page.route("https://tiles.openfreemap.org/styles/liberty", (r) =>
+    r.fulfill({
+      json: {
+        version: 8,
+        sources: {
+          fixture: {
+            type: "raster",
+            tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+            tileSize: 256,
+          },
+        },
+        layers: [
+          { id: "map", type: "raster", source: "fixture" },
+          {
+            id: "labels",
+            type: "symbol",
+            source: "fixture",
+            layout: { "text-field": "TEXT MUST BE REMOVED" },
+          },
+        ],
+      },
+    }),
+  );
   await page.route("https://tile.openstreetmap.org/**", (r) =>
     r.fulfill({
       body: tile,
@@ -234,4 +257,53 @@ test("sharing gives useful feedback", async ({ page }) => {
   await expect(page.locator(".outcome")).toContainText(
     /Link copied|Copy the address bar/,
   );
+});
+
+test("version links work under the Pages subpath", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "Space Bunny’s version" }).click();
+  await expect(page).toHaveURL(/\/space-bunny\/$/);
+  await expect(page.locator("h1")).toHaveText("maptcha");
+  await page.getByRole("link", { name: "Original version" }).click();
+  await expect(page.locator(".brand")).toContainText("maptcha");
+});
+
+test("changing location cancels stalled style resources and removes the old renderer", async ({
+  page,
+}) => {
+  let release: () => void = () => {};
+  const pending = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("https://fixtures.invalid/slow.json", async (route) => {
+    await pending;
+    await route
+      .fulfill({
+        json: { tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"] },
+      })
+      .catch(() => {});
+  });
+  await page.route("https://tiles.openfreemap.org/styles/liberty", (route) =>
+    route.fulfill({
+      json: {
+        version: 8,
+        sources: {
+          fixture: {
+            type: "raster",
+            url: "https://fixtures.invalid/slow.json",
+            tileSize: 256,
+          },
+        },
+        layers: [{ id: "map", type: "raster", source: "fixture" }],
+      },
+    }),
+  );
+  await page.goto("/");
+  await expect(page.locator("[data-map-renderer]")).toHaveCount(1);
+  await fixture(page);
+  await page.getByRole("button", { name: "Bern · River bend" }).click();
+  await expect(page.locator(".tile")).toHaveCount(9);
+  await expect(page.locator("[data-map-renderer]")).toHaveCount(0);
+  release();
+  await expect(page.locator("h2")).toHaveText("Bern · River bend");
 });

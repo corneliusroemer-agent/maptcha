@@ -1,0 +1,17 @@
+node_modules
+dist
+dist-ssr
+*.local
+coverage
+playwright-report
+test-results
+blob-report
+.playwright
+.DS_Store
+*.log
+.vite
+
+# Screenshots written by the ad-hoc visual check
+e2e/fixtures/shot-*.png
+
+*.tsbuildinfo

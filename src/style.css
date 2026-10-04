@@ -461,3 +461,28 @@ footer a {
     animation: none;
   }
 }
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.version-link {
+  font-size: 11px;
+  color: #667069;
+  text-decoration: none;
+}
+.version-link:hover {
+  color: #ad632e;
+  text-decoration: underline;
+}
+@media (max-width: 900px) {
+  .header-tools .edition {
+    display: none;
+  }
+}
+@media (max-width: 350px) {
+  .version-link {
+    font-size: 10px;
+  }
+}

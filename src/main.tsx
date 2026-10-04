@@ -40,6 +40,7 @@ function App() {
   }
   useEffect(() => {
     let active = true;
+    const controller = new AbortController();
     setMap("");
     setError("");
     reset();
@@ -48,7 +49,7 @@ function App() {
       "",
       `#lat=${place.lat}&lon=${place.lon}&m=${metres}`,
     );
-    mapImage(place, metres)
+    mapImage(place, metres, controller.signal)
       .then((url) => {
         if (active) setMap(url);
       })
@@ -57,6 +58,7 @@ function App() {
       });
     return () => {
       active = false;
+      controller.abort();
     };
   }, [place, metres, retry]);
   useEffect(() => {
@@ -161,7 +163,12 @@ function App() {
         <a className="brand" href={location.pathname}>
           maptcha<span className="brand-mark">↗</span>
         </a>
-        <span className="edition">A SMALL CARTOGRAPHIC DIVERSION</span>
+        <div className="header-tools">
+          <span className="edition">A SMALL CARTOGRAPHIC DIVERSION</span>
+          <a className="version-link" href="./space-bunny/">
+            Space Bunny’s version ↗
+          </a>
+        </div>
       </header>
       <div className="layout">
         <section className="intro">
@@ -339,6 +346,18 @@ function App() {
               rel="noreferrer"
             >
               OpenStreetMap contributors
+            </a>{" "}
+            · Tiles by{" "}
+            <a href="https://openfreemap.org/" target="_blank" rel="noreferrer">
+              OpenFreeMap
+            </a>{" "}
+            ·{" "}
+            <a
+              href="https://openmaptiles.org/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              OpenMapTiles
             </a>{" "}
             · Search by{" "}
             <a href="https://photon.komoot.io" target="_blank" rel="noreferrer">

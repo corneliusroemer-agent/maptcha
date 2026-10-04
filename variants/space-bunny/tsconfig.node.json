@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    // The e2e specs pass callbacks into `page.evaluate`, which are compiled in
+    // this project but run in the browser, so they need the DOM types even
+    // though nothing here executes in node.
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["vite.config.ts", "vitest.config.ts", "playwright.config.ts", "e2e"]
+}
